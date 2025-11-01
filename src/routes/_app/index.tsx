@@ -4,7 +4,6 @@ import { createFileRoute } from '@tanstack/react-router';
 import { Card, CardContent } from '@/components/ui/card';
 import { CardTicket } from './-components/card-ticket';
 import { ModalTicket } from './-components/modal-ticket';
-
 import type { ITicket } from '@/@types/ITicket';
 import { useQuery } from '@tanstack/react-query';
 import { useListTickets } from '@/service/tickets/use-list-tickets';

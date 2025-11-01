@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AppLayoutRouteImport } from './routes/_app/layout'
 import { Route as AppIndexRouteImport } from './routes/_app/index'
+import { Route as AppListUserRouteImport } from './routes/_app/list-user'
+import { Route as AppListTechniciansRouteImport } from './routes/_app/list-technicians'
 
 const AppLayoutRoute = AppLayoutRouteImport.update({
   id: '/_app',
@@ -21,24 +23,45 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppLayoutRoute,
 } as any)
+const AppListUserRoute = AppListUserRouteImport.update({
+  id: '/list-user',
+  path: '/list-user',
+  getParentRoute: () => AppLayoutRoute,
+} as any)
+const AppListTechniciansRoute = AppListTechniciansRouteImport.update({
+  id: '/list-technicians',
+  path: '/list-technicians',
+  getParentRoute: () => AppLayoutRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
+  '/list-technicians': typeof AppListTechniciansRoute
+  '/list-user': typeof AppListUserRoute
   '/': typeof AppIndexRoute
 }
 export interface FileRoutesByTo {
+  '/list-technicians': typeof AppListTechniciansRoute
+  '/list-user': typeof AppListUserRoute
   '/': typeof AppIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppLayoutRouteWithChildren
+  '/_app/list-technicians': typeof AppListTechniciansRoute
+  '/_app/list-user': typeof AppListUserRoute
   '/_app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/list-technicians' | '/list-user' | '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/_app' | '/_app/'
+  to: '/list-technicians' | '/list-user' | '/'
+  id:
+    | '__root__'
+    | '/_app'
+    | '/_app/list-technicians'
+    | '/_app/list-user'
+    | '/_app/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -61,14 +84,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppLayoutRoute
     }
+    '/_app/list-user': {
+      id: '/_app/list-user'
+      path: '/list-user'
+      fullPath: '/list-user'
+      preLoaderRoute: typeof AppListUserRouteImport
+      parentRoute: typeof AppLayoutRoute
+    }
+    '/_app/list-technicians': {
+      id: '/_app/list-technicians'
+      path: '/list-technicians'
+      fullPath: '/list-technicians'
+      preLoaderRoute: typeof AppListTechniciansRouteImport
+      parentRoute: typeof AppLayoutRoute
+    }
   }
 }
 
 interface AppLayoutRouteChildren {
+  AppListTechniciansRoute: typeof AppListTechniciansRoute
+  AppListUserRoute: typeof AppListUserRoute
   AppIndexRoute: typeof AppIndexRoute
 }
 
 const AppLayoutRouteChildren: AppLayoutRouteChildren = {
+  AppListTechniciansRoute: AppListTechniciansRoute,
+  AppListUserRoute: AppListUserRoute,
   AppIndexRoute: AppIndexRoute,
 }
 
