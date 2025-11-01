@@ -21,7 +21,6 @@ function Reports() {
     queryFn: loadDashboard,
   });
 
-  // Calcula totais e estatísticas
   const totals = data?.reduce(
     (acc, item) => ({
       pending: acc.pending + item.pending,
@@ -69,7 +68,6 @@ function Reports() {
         </p>
       </div>
 
-      {/* Cards com estatísticas */}
       <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-6'>
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
@@ -148,7 +146,6 @@ function Reports() {
         </Card>
       </div>
 
-      {/* Gráfico */}
       <Card>
         <CardHeader>
           <CardTitle>Evolução de Chamados por Data</CardTitle>

@@ -31,7 +31,6 @@ export async function loadDashboard() {
   console.log(ticketsData);
 
   const data: TicketData[] = [
-    // 2025-01-01
     { status: 'pending', created_at: '2025-01-01' },
     { status: 'pending', created_at: '2025-01-01' },
     { status: 'pending', created_at: '2025-01-01' },
@@ -41,7 +40,6 @@ export async function loadDashboard() {
     { status: 'completed', created_at: '2025-01-01' },
     { status: 'completed', created_at: '2025-01-01' },
     { status: 'completed', created_at: '2025-01-01' },
-    // 2025-01-02
     { status: 'pending', created_at: '2025-01-02' },
     { status: 'pending', created_at: '2025-01-02' },
     { status: 'pending', created_at: '2025-01-02' },
@@ -55,7 +53,6 @@ export async function loadDashboard() {
     { status: 'completed', created_at: '2025-01-02' },
     { status: 'completed', created_at: '2025-01-02' },
     { status: 'cancelled', created_at: '2025-01-02' },
-    // 2025-01-03
     { status: 'pending', created_at: '2025-01-03' },
     { status: 'pending', created_at: '2025-01-03' },
     { status: 'in_progress', created_at: '2025-01-03' },
@@ -65,7 +62,6 @@ export async function loadDashboard() {
     { status: 'completed', created_at: '2025-01-03' },
     { status: 'cancelled', created_at: '2025-01-03' },
     { status: 'cancelled', created_at: '2025-01-03' },
-    // 2025-01-04
     { status: 'pending', created_at: '2025-01-04' },
     { status: 'pending', created_at: '2025-01-04' },
     { status: 'pending', created_at: '2025-01-04' },
@@ -80,7 +76,6 @@ export async function loadDashboard() {
     { status: 'completed', created_at: '2025-01-04' },
     { status: 'completed', created_at: '2025-01-04' },
     { status: 'completed', created_at: '2025-01-04' },
-    // 2025-01-05
     { status: 'pending', created_at: '2025-01-05' },
     { status: 'pending', created_at: '2025-01-05' },
     { status: 'pending', created_at: '2025-01-05' },
@@ -93,7 +88,6 @@ export async function loadDashboard() {
     { status: 'completed', created_at: '2025-01-05' },
     { status: 'completed', created_at: '2025-01-05' },
     { status: 'cancelled', created_at: '2025-01-05' },
-    // 2025-01-06
     { status: 'pending', created_at: '2025-01-06' },
     { status: 'pending', created_at: '2025-01-06' },
     { status: 'pending', created_at: '2025-01-06' },
@@ -110,7 +104,6 @@ export async function loadDashboard() {
     { status: 'completed', created_at: '2025-01-06' },
     { status: 'cancelled', created_at: '2025-01-06' },
     { status: 'cancelled', created_at: '2025-01-06' },
-    // 2025-01-07
     { status: 'pending', created_at: '2025-01-07' },
     { status: 'pending', created_at: '2025-01-07' },
     { status: 'in_progress', created_at: '2025-01-07' },
@@ -121,7 +114,6 @@ export async function loadDashboard() {
     { status: 'completed', created_at: '2025-01-07' },
     { status: 'completed', created_at: '2025-01-07' },
     { status: 'completed', created_at: '2025-01-07' },
-    // 2025-01-08
     { status: 'pending', created_at: '2025-01-08' },
     { status: 'pending', created_at: '2025-01-08' },
     { status: 'pending', created_at: '2025-01-08' },

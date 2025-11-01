@@ -22,7 +22,6 @@ interface ReportAreaProps {
   data: DashboardData[];
 }
 
-// Função para formatar a data no eixo X
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
   return date.toLocaleDateString('pt-BR', {
@@ -31,7 +30,6 @@ const formatDate = (dateString: string) => {
   });
 };
 
-// Custom Tooltip
 interface TooltipProps {
   active?: boolean;
   payload?: Array<{

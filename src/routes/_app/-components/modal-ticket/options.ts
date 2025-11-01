@@ -25,7 +25,6 @@ export const STATUS_VARIANTS: Record<
   cancelled: 'destructive',
 };
 
-// Cores customizadas para cada status
 export const STATUS_COLORS: Record<string, string> = {
   pending: 'bg-[#eb7b24] text-white border-transparent',
   scheduled: 'bg-[#3b82f6] text-white border-transparent',
