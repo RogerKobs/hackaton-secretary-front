@@ -24,6 +24,7 @@ interface AutocompleteProps {
   label: string;
   options: { value: string; label: string }[];
   required?: boolean;
+  disabled?: boolean;
 }
 
 export function Autocomplete({
@@ -31,6 +32,7 @@ export function Autocomplete({
   label,
   options,
   required,
+  disabled,
 }: AutocompleteProps) {
   const [open, setOpen] = useState(false);
   const { control } = useFormContext();
@@ -45,13 +47,17 @@ export function Autocomplete({
             {label}
             {required && <span>*</span>}
           </Label>
-          <Popover open={open} onOpenChange={setOpen}>
+          <Popover open={open && !disabled} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
               <Button
                 variant='outline'
                 role='combobox'
                 aria-expanded={open}
-                className='w-full justify-between'
+                className={cn(
+                  'w-full justify-between',
+                  value && 'text-foreground',
+                )}
+                disabled={disabled}
               >
                 {value
                   ? options.find((item) => item.value === value)?.label
@@ -84,7 +90,9 @@ export function Autocomplete({
                         <Check
                           className={cn(
                             'ml-auto',
-                            value === item.value ? 'opacity-100' : 'opacity-0',
+                            value === item.value
+                              ? 'opacity-100 text-primary'
+                              : 'opacity-0',
                           )}
                         />
                       </CommandItem>

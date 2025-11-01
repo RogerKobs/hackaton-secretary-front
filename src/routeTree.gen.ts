@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AppLayoutRouteImport } from './routes/_app/layout'
 import { Route as AppIndexRouteImport } from './routes/_app/index'
+import { Route as AppReportsRouteImport } from './routes/_app/reports'
 import { Route as AppListUserRouteImport } from './routes/_app/list-user'
 import { Route as AppListTechniciansRouteImport } from './routes/_app/list-technicians'
 import { Route as AppListProducersRouteImport } from './routes/_app/list-producers'
@@ -22,6 +23,11 @@ const AppLayoutRoute = AppLayoutRouteImport.update({
 const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => AppLayoutRoute,
+} as any)
+const AppReportsRoute = AppReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
   getParentRoute: () => AppLayoutRoute,
 } as any)
 const AppListUserRoute = AppListUserRouteImport.update({
@@ -44,12 +50,14 @@ export interface FileRoutesByFullPath {
   '/list-producers': typeof AppListProducersRoute
   '/list-technicians': typeof AppListTechniciansRoute
   '/list-user': typeof AppListUserRoute
+  '/reports': typeof AppReportsRoute
   '/': typeof AppIndexRoute
 }
 export interface FileRoutesByTo {
   '/list-producers': typeof AppListProducersRoute
   '/list-technicians': typeof AppListTechniciansRoute
   '/list-user': typeof AppListUserRoute
+  '/reports': typeof AppReportsRoute
   '/': typeof AppIndexRoute
 }
 export interface FileRoutesById {
@@ -58,19 +66,26 @@ export interface FileRoutesById {
   '/_app/list-producers': typeof AppListProducersRoute
   '/_app/list-technicians': typeof AppListTechniciansRoute
   '/_app/list-user': typeof AppListUserRoute
+  '/_app/reports': typeof AppReportsRoute
   '/_app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/list-producers' | '/list-technicians' | '/list-user' | '/'
+  fullPaths:
+    | '/list-producers'
+    | '/list-technicians'
+    | '/list-user'
+    | '/reports'
+    | '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/list-producers' | '/list-technicians' | '/list-user' | '/'
+  to: '/list-producers' | '/list-technicians' | '/list-user' | '/reports' | '/'
   id:
     | '__root__'
     | '/_app'
     | '/_app/list-producers'
     | '/_app/list-technicians'
     | '/_app/list-user'
+    | '/_app/reports'
     | '/_app/'
   fileRoutesById: FileRoutesById
 }
@@ -92,6 +107,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppLayoutRoute
+    }
+    '/_app/reports': {
+      id: '/_app/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof AppReportsRouteImport
       parentRoute: typeof AppLayoutRoute
     }
     '/_app/list-user': {
@@ -122,6 +144,7 @@ interface AppLayoutRouteChildren {
   AppListProducersRoute: typeof AppListProducersRoute
   AppListTechniciansRoute: typeof AppListTechniciansRoute
   AppListUserRoute: typeof AppListUserRoute
+  AppReportsRoute: typeof AppReportsRoute
   AppIndexRoute: typeof AppIndexRoute
 }
 
@@ -129,6 +152,7 @@ const AppLayoutRouteChildren: AppLayoutRouteChildren = {
   AppListProducersRoute: AppListProducersRoute,
   AppListTechniciansRoute: AppListTechniciansRoute,
   AppListUserRoute: AppListUserRoute,
+  AppReportsRoute: AppReportsRoute,
   AppIndexRoute: AppIndexRoute,
 }
 

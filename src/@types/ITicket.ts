@@ -7,4 +7,5 @@ export interface ITicket {
   description: string;
   scheduling_at: string;
   id_technicians: string;
+  technician_notes?: string;
 }

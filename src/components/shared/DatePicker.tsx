@@ -18,9 +18,15 @@ interface DatePickerProps {
   name: string;
   label: string;
   required?: boolean;
+  disabled?: boolean;
 }
 
-export function DatePicker({ name, label, required }: DatePickerProps) {
+export function DatePicker({
+  name,
+  label,
+  required,
+  disabled,
+}: DatePickerProps) {
   const [open, setOpen] = useState(false);
 
   const { control } = useFormContext();
@@ -88,12 +94,13 @@ export function DatePicker({ name, label, required }: DatePickerProps) {
                 {required && <span>*</span>}
               </Label>
 
-              <Popover open={open} onOpenChange={setOpen}>
+              <Popover open={open && !disabled} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
                   <Button
                     variant='outline'
                     id='date-picker'
                     className='w-full justify-between font-normal'
+                    disabled={disabled}
                   >
                     {value ? formatDateDisplay(value) : 'Selecione a data'}
                     <ChevronDownIcon />
@@ -109,7 +116,7 @@ export function DatePicker({ name, label, required }: DatePickerProps) {
                     required={required}
                     selected={currentDate || undefined}
                     captionLayout='dropdown'
-                    onSelect={(date) => {
+                    onSelect={(date: Date | undefined) => {
                       if (date) {
                         handleDateChange(date);
                         setOpen(false);
@@ -133,6 +140,7 @@ export function DatePicker({ name, label, required }: DatePickerProps) {
                 onChange={(e) => handleTimeChange(e.target.value)}
                 className='w-full bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none'
                 required={required}
+                disabled={disabled}
               />
             </div>
           </div>
