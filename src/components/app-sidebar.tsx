@@ -8,7 +8,7 @@ const navItems = [
   { href: '/', label: 'Início', icon: Home },
   { href: '/list-user', label: 'Usuários', icon: User },
   { href: '/list-technicians', label: 'Técnicos', icon: User },
-  { href: '/list- productors', label: 'Produtores', icon: User },
+  { href: '/list-producers', label: 'Produtores', icon: User },
   { href: '/reports', label: 'Relatórios', icon: BookMarked },
 ];
 
