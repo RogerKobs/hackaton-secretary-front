@@ -9,10 +9,11 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Calendar } from 'lucide-react';
+import { Calendar, MessageSquare } from 'lucide-react';
 import { FormProvider, useForm } from 'react-hook-form';
 import type { ITicket } from '@/@types/ITicket';
-import { STATUS_VARIANTS, STATUS_LABELS } from './options';
+import { STATUS_VARIANTS, STATUS_LABELS, STATUS_COLORS } from './options';
+import { cn } from '@/lib/utils';
 import { DatePicker } from '@/components/shared/DatePicker';
 import { Autocomplete } from '@/components/shared/Autocomplete';
 import { formatDate } from '@/utils/format-string';
@@ -96,6 +97,10 @@ export function ModalTicket({
     closeModal();
   };
 
+  const canEdit =
+    selectedTicket?.status === 'pending' ||
+    selectedTicket?.status === 'scheduled';
+
   return (
     <Dialog open={isOpen} onOpenChange={closeModal}>
       <DialogContent className='sm:max-w-[600px]'>
@@ -126,7 +131,10 @@ export function ModalTicket({
                     variant={
                       STATUS_VARIANTS[selectedTicket.status] || 'default'
                     }
-                    className='text-xs'
+                    className={cn(
+                      'text-xs',
+                      STATUS_COLORS[selectedTicket.status] || '',
+                    )}
                   >
                     {STATUS_LABELS[selectedTicket.status] ||
                       selectedTicket.status}
@@ -148,6 +156,20 @@ export function ModalTicket({
           </div>
         )}
 
+        {selectedTicket?.technician_notes && (
+          <div className='space-y-2 rounded-lg border bg-muted/30 p-4'>
+            <div className='flex items-center gap-2'>
+              <MessageSquare className='h-4 w-4 text-muted-foreground' />
+              <label className='text-sm font-medium text-muted-foreground'>
+                Comentários do Técnico
+              </label>
+            </div>
+            <p className='text-sm text-foreground whitespace-pre-wrap'>
+              {selectedTicket.technician_notes}
+            </p>
+          </div>
+        )}
+
         <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
           <FormProvider {...form}>
             <div className='space-y-2'>
@@ -155,12 +177,14 @@ export function ModalTicket({
                 name='scheduling_at'
                 label='Data de Agendamento'
                 required
+                disabled={!canEdit}
               />
               <Autocomplete
                 name='id_technicians'
                 label='Técnico Responsável'
-                options={TECHNICIAN_OPTIONS}
+                options={TECHNICIAN_OPTIONS || []}
                 required
+                disabled={!canEdit}
               />
             </div>
 
@@ -169,7 +193,7 @@ export function ModalTicket({
                 Fechar
               </Button>
 
-              <Button type='submit'>Salvar Alterações</Button>
+              {canEdit && <Button type='submit'>Salvar Alterações</Button>}
             </DialogFooter>
           </FormProvider>
         </form>

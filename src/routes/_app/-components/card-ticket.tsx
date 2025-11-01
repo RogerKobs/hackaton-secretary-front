@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, UserCircle } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 import type { ITicket } from '@/@types/ITicket';
 
@@ -33,6 +34,14 @@ const STATUS_VARIANTS: Record<
   in_progress: 'default',
   completed: 'outline',
   cancelled: 'destructive',
+};
+
+const STATUS_COLORS: Record<string, string> = {
+  pending: 'bg-[#eb7b24] text-white border-transparent',
+  scheduled: 'bg-[#3b82f6] text-white border-transparent',
+  in_progress: 'bg-[#6366f1] text-white border-transparent',
+  completed: 'bg-[#008f35] text-white border-transparent',
+  cancelled: 'bg-[#000000] text-white border-transparent',
 };
 
 type CardTicketProps = Omit<ITicket, 'id'> & {
@@ -68,7 +77,7 @@ export function CardTicket({
         <div className='flex items-start justify-between gap-2 mb-2'>
           <Badge
             variant={STATUS_VARIANTS[status] || 'default'}
-            className='text-xs'
+            className={cn('text-xs', STATUS_COLORS[status] || '')}
           >
             {STATUS_LABELS[status] || status}
           </Badge>
