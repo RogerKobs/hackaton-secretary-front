@@ -23,9 +23,15 @@ interface AutocompleteProps {
   name: string;
   label: string;
   options: { value: string; label: string }[];
+  required?: boolean;
 }
 
-export function Autocomplete({ name, label, options }: AutocompleteProps) {
+export function Autocomplete({
+  name,
+  label,
+  options,
+  required,
+}: AutocompleteProps) {
   const [open, setOpen] = useState(false);
   const { control } = useFormContext();
 
@@ -35,7 +41,10 @@ export function Autocomplete({ name, label, options }: AutocompleteProps) {
       control={control}
       render={({ field: { value, onChange } }) => (
         <div className='flex flex-col gap-2 w-full'>
-          <Label>{label}</Label>
+          <Label>
+            {label}
+            {required && <span>*</span>}
+          </Label>
           <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
               <Button
@@ -57,10 +66,7 @@ export function Autocomplete({ name, label, options }: AutocompleteProps) {
               style={{ width: 'var(--radix-popover-trigger-width)' }}
             >
               <Command>
-                <CommandInput
-                  placeholder='Search framework...'
-                  className='h-9'
-                />
+                <CommandInput placeholder='Pesquisar...' className='h-9' />
                 <CommandList>
                   <CommandEmpty>Nenhuma opção encontrada.</CommandEmpty>
 
@@ -69,8 +75,8 @@ export function Autocomplete({ name, label, options }: AutocompleteProps) {
                       <CommandItem
                         key={item.value}
                         value={item.value}
-                        onSelect={(currentValue) => {
-                          onChange(currentValue === value ? '' : currentValue);
+                        onSelect={() => {
+                          onChange(item.value);
                           setOpen(false);
                         }}
                       >

@@ -17,6 +17,11 @@ import { DatePicker } from '@/components/shared/DatePicker';
 import { Autocomplete } from '@/components/shared/Autocomplete';
 import { formatDate } from '@/utils/format-string';
 
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useUpdateTicket } from '@/service/tickets/use-update-ticket';
+import { useListTechnicians } from '@/service/technician/use-list-technicians';
+import { useListTickets } from '@/service/tickets/use-list-tickets';
+
 interface ModalTicketProps {
   isOpen: boolean;
   selectedTicket: ITicket | null;
@@ -28,32 +33,66 @@ export function ModalTicket({
   selectedTicket,
   closeModal,
 }: ModalTicketProps) {
-  const form = useForm<ITicket>({
+  const form = useForm<{
+    scheduling_at: string;
+    id_technicians: string;
+  }>({
     defaultValues: {
-      scheduled_time: '',
-      technician_name: '',
+      scheduling_at: '',
+      id_technicians: '',
     },
   });
   const { setValue, handleSubmit } = form;
 
-  const TECHNICIAN_OPTIONS = [
-    { value: 'João da Silva', label: 'João da Silva' },
-    { value: 'Maria Oliveira', label: 'Maria Oliveira' },
-    { value: 'Pedro Santos', label: 'Pedro Santos' },
-    { value: 'Ana Julia', label: 'Ana Julia' },
-    { value: 'Carlos Eduardo', label: 'Carlos Eduardo' },
-    { value: 'Larissa Ferreira', label: 'Larissa Ferreira' },
-  ];
+  const { data: technicians } = useQuery({
+    queryKey: ['technicians'],
+    queryFn: useListTechnicians,
+  });
+
+  const { refetch: refetchTickets } = useQuery({
+    queryKey: ['tickets'],
+    queryFn: useListTickets,
+  });
+
+  const TECHNICIAN_OPTIONS = technicians?.map((technician) => ({
+    value: technician.id,
+    label: technician.name,
+  }));
 
   useEffect(() => {
     if (selectedTicket) {
-      setValue('scheduled_time', selectedTicket.scheduled_time);
-      setValue('technician_name', selectedTicket.technician_name);
+      setValue('scheduling_at', selectedTicket.scheduling_at);
+      setValue('id_technicians', selectedTicket.id_technicians);
     }
   }, [selectedTicket, setValue]);
 
-  const onSubmit = (data: ITicket) => {
-    console.log(data);
+  const { mutateAsync: updateTicket } = useMutation({
+    mutationKey: ['updateTicket'],
+    mutationFn: useUpdateTicket,
+    onSuccess: () => {
+      closeModal();
+      refetchTickets();
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
+
+  const onSubmit = async ({
+    scheduling_at,
+    id_technicians,
+  }: {
+    scheduling_at: string;
+    id_technicians: string;
+  }) => {
+    await updateTicket({
+      id: selectedTicket?.id ?? '',
+      updatedData: {
+        scheduling_at,
+        id_technicians,
+        status: 'scheduled',
+      },
+    });
     closeModal();
   };
 
@@ -112,11 +151,16 @@ export function ModalTicket({
         <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
           <FormProvider {...form}>
             <div className='space-y-2'>
-              <DatePicker name='scheduled_time' />
+              <DatePicker
+                name='scheduling_at'
+                label='Data de Agendamento'
+                required
+              />
               <Autocomplete
-                name='technician_name'
+                name='id_technicians'
                 label='Técnico Responsável'
                 options={TECHNICIAN_OPTIONS}
+                required
               />
             </div>
 

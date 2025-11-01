@@ -16,9 +16,11 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 interface DatePickerProps {
   name: string;
+  label: string;
+  required?: boolean;
 }
 
-export function DatePicker({ name }: DatePickerProps) {
+export function DatePicker({ name, label, required }: DatePickerProps) {
   const [open, setOpen] = useState(false);
 
   const { control } = useFormContext();
@@ -82,7 +84,8 @@ export function DatePicker({ name }: DatePickerProps) {
           <div className='flex gap-4 w-full'>
             <div className='flex flex-col gap-3 flex-1'>
               <Label htmlFor='date-picker' className='px-1'>
-                Date
+                {label}
+                {required && <span>*</span>}
               </Label>
 
               <Popover open={open} onOpenChange={setOpen}>
@@ -92,7 +95,7 @@ export function DatePicker({ name }: DatePickerProps) {
                     id='date-picker'
                     className='w-full justify-between font-normal'
                   >
-                    {value ? formatDateDisplay(value) : 'Select date'}
+                    {value ? formatDateDisplay(value) : 'Selecione a data'}
                     <ChevronDownIcon />
                   </Button>
                 </PopoverTrigger>
@@ -103,6 +106,7 @@ export function DatePicker({ name }: DatePickerProps) {
                 >
                   <Calendar
                     mode='single'
+                    required={required}
                     selected={currentDate || undefined}
                     captionLayout='dropdown'
                     onSelect={(date) => {
@@ -118,7 +122,8 @@ export function DatePicker({ name }: DatePickerProps) {
 
             <div className='flex flex-col gap-3 flex-1'>
               <Label htmlFor='time-picker' className='px-1'>
-                Time
+                Horário
+                {required && <span>*</span>}
               </Label>
               <Input
                 type='time'
@@ -127,6 +132,7 @@ export function DatePicker({ name }: DatePickerProps) {
                 value={formatTimeDisplay(value)}
                 onChange={(e) => handleTimeChange(e.target.value)}
                 className='w-full bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none'
+                required={required}
               />
             </div>
           </div>

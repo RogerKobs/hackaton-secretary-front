@@ -4,6 +4,10 @@ import { Calendar, UserCircle } from 'lucide-react';
 
 import type { ITicket } from '@/@types/ITicket';
 
+import { useQuery } from '@tanstack/react-query';
+import { useListTechnicians } from '@/service/technician/use-list-technicians';
+import { formatDate } from '@/utils/format-string';
+
 const CATEGORY_LABELS: Record<string, string> = {
   technical: 'Assistência Técnica',
   financial: 'Consultoria Financeira',
@@ -36,14 +40,25 @@ type CardTicketProps = Omit<ITicket, 'id'> & {
 };
 
 export function CardTicket({
+  title,
   category,
   created_at,
   status,
   description,
-  scheduled_time,
-  technician_name,
+  scheduling_at,
+  id_technicians,
   onClick,
 }: CardTicketProps) {
+  const { data: technicians } = useQuery({
+    queryKey: ['technicians'],
+    queryFn: useListTechnicians,
+  });
+
+  const technician = technicians?.find(
+    (technician) => technician.id === id_technicians,
+  );
+  const technicianLabel = technician?.name || 'Não atribuído';
+
   return (
     <Card
       className='flex flex-col cursor-pointer transition-shadow hover:shadow-md'
@@ -66,8 +81,11 @@ export function CardTicket({
           </span>
         </div>
 
-        <CardTitle className='text-base leading-tight'>
-          {CATEGORY_LABELS[category] || category}
+        <CardTitle className='text-base leading-tight flex items-center gap-2'>
+          {title}
+          <Badge variant='outline' className='text-xs'>
+            {CATEGORY_LABELS[category] || category}
+          </Badge>
         </CardTitle>
       </CardHeader>
 
@@ -75,18 +93,19 @@ export function CardTicket({
         <p className='text-sm text-muted-foreground line-clamp-2'>
           {description}
         </p>
+
         <div className='space-y-1.5 text-xs'>
-          {scheduled_time && (
+          {scheduling_at && (
             <div className='flex items-center gap-1.5 text-muted-foreground'>
               <Calendar className='h-3.5 w-3.5' />
-              <span>{new Date(scheduled_time).toLocaleString('pt-BR')}</span>
+              <span>{formatDate(scheduling_at)}</span>
             </div>
           )}
 
-          {technician_name && (
+          {id_technicians && (
             <div className='flex items-center gap-1.5 text-muted-foreground'>
               <UserCircle className='h-3.5 w-3.5' />
-              <span>{technician_name}</span>
+              <span>{technicianLabel}</span>
             </div>
           )}
         </div>

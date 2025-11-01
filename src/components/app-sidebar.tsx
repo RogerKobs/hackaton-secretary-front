@@ -1,4 +1,4 @@
-import { Bell, Home, User, LogOut } from 'lucide-react';
+import { Home, User, LogOut, BookMarked } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
@@ -6,8 +6,10 @@ import { Link, useLocation } from '@tanstack/react-router';
 
 const navItems = [
   { href: '/', label: 'Início', icon: Home },
-  { href: '/notification', label: 'Notificações', icon: Bell },
-  { href: '/perfil', label: 'Meu Perfil', icon: User },
+  { href: '/list-users', label: 'Usuários', icon: User },
+  { href: '/list-technicians', label: 'Técnicos', icon: User },
+  { href: '/list- productors', label: 'Produtores', icon: User },
+  { href: '/reports', label: 'Relatórios', icon: BookMarked },
 ];
 
 interface AppSidebarProps {

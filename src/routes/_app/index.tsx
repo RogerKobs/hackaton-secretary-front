@@ -6,6 +6,8 @@ import { CardTicket } from './-components/card-ticket';
 import { ModalTicket } from './-components/modal-ticket';
 
 import type { ITicket } from '@/@types/ITicket';
+import { useQuery } from '@tanstack/react-query';
+import { useListTickets } from '@/service/tickets/use-list-tickets';
 
 export const Route = createFileRoute('/_app/')({
   component: Painel,
@@ -15,26 +17,10 @@ function Painel() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState<ITicket | null>(null);
 
-  const tickets = [
-    {
-      id: 1,
-      category: 'technical',
-      created_at: '2021-01-01',
-      status: 'pending',
-      description: 'Descrição do chamado',
-      scheduled_time: '2021-01-01',
-      technician_name: 'João da Silva',
-    },
-    {
-      id: 2,
-      category: 'technical',
-      created_at: '2021-01-01',
-      status: 'pending',
-      description: 'Descrição do chamado',
-      scheduled_time: '2021-01-01',
-      technician_name: 'João da Silva',
-    },
-  ];
+  const { data: tickets } = useQuery({
+    queryKey: ['tickets'],
+    queryFn: useListTickets,
+  });
 
   return (
     <>
@@ -46,7 +32,7 @@ function Painel() {
           </p>
         </div>
 
-        {tickets.length === 0 ? (
+        {tickets?.length === 0 ? (
           <Card>
             <CardContent className='py-12 text-center'>
               <p className='text-muted-foreground'>
@@ -56,7 +42,7 @@ function Painel() {
           </Card>
         ) : (
           <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
-            {tickets.map((ticket) => (
+            {tickets?.map((ticket) => (
               <CardTicket
                 key={ticket.id}
                 onClick={() => {
@@ -70,14 +56,16 @@ function Painel() {
         )}
       </div>
 
-      <ModalTicket
-        isOpen={isOpen}
-        selectedTicket={selectedTicket}
-        closeModal={() => {
-          setIsOpen(false);
-          setSelectedTicket(null);
-        }}
-      />
+      {isOpen && (
+        <ModalTicket
+          isOpen={isOpen}
+          selectedTicket={selectedTicket}
+          closeModal={() => {
+            setIsOpen(false);
+            setSelectedTicket(null);
+          }}
+        />
+      )}
     </>
   );
 }
